@@ -5,10 +5,7 @@ import { Environment } from '@hashibutogarasu/common';
 
 class ProductionOpenAPIEnvironment extends AbstractPluginEnvironment {
   resolve(): BetterAuthPlugin {
-    return {
-      id: 'openapi',
-      endpoints: {},
-    } satisfies BetterAuthPlugin;
+    return defaultOpenAPI();
   }
 }
 
