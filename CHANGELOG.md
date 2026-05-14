@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.5.0](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.5...karasu-lab-api-v5.5.0) (2026-05-14)
+
+
+### Features
+
+* add .infisical.json configuration file ([8bfbf6b](https://github.com/Karasu-Lab/karasu-lab-api/commit/8bfbf6b16268a06d98775de0275af466178abdd9))
+* enhance auth key normalization and simplify DotEnv service implementation ([44f9133](https://github.com/Karasu-Lab/karasu-lab-api/commit/44f9133b4443299c71030e9bc118b7c4c4c83428))
+
+
+### Bug Fixes
+
+* update Dockerfile to correct paths for package.json and related files ([8e9cc37](https://github.com/Karasu-Lab/karasu-lab-api/commit/8e9cc37da5cf74993988f46b1be80c89ed4e33a2))
+
 ## [5.4.5](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.4...karasu-lab-api-v5.4.5) (2026-05-14)
 
 
