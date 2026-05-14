@@ -12,9 +12,9 @@ RUN echo "node-linker=hoisted" > .npmrc && \
     echo "shamefully-hoist=true" >> .npmrc && \
     echo "strict-peer-dependencies=false" >> .npmrc
 
-COPY packages/api/package.json ./package.json
-COPY packages/api/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY packages/api/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY package.json ./package.json
+COPY pnpm-lock.yaml ./pnpm-lock.yaml
+COPY pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY packages/common/package.json ./packages/common/package.json
 
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm fetch --frozen-lockfile
