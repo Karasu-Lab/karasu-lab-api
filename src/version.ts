@@ -1,1 +1,1 @@
-export const packageVersion = '5.4.2'; // x-release-please-version
+export const packageVersion = '5.4.3'; // x-release-please-version
