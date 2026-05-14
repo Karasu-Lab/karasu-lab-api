@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.5](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.4...karasu-lab-api-v5.4.5) (2026-05-14)
+
+
+### Bug Fixes
+
+* update Dockerfile to correct package.json and workspace file paths ([886714a](https://github.com/Karasu-Lab/karasu-lab-api/commit/886714aa2df11da393270d0133857e8d13a9669f))
+
 ## [5.4.4](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.3...karasu-lab-api-v5.4.4) (2026-05-14)
 
 
