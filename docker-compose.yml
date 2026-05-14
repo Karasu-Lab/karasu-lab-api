@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     container_name: karasu-lab-api
-    image: hashibutogarasu/karasu-lab-api:5.4.4 # x-release-please-version
+    image: hashibutogarasu/karasu-lab-api:5.4.5 # x-release-please-version
     build:
       context: .
       dockerfile: Dockerfile
