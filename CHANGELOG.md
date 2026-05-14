@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.4](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.3...karasu-lab-api-v5.4.4) (2026-05-14)
+
+
+### Code Refactoring
+
+* simplify openAPI plugin and update Dockerfile for package copying ([7e3fcc7](https://github.com/Karasu-Lab/karasu-lab-api/commit/7e3fcc7ae8690dda797168936cbf1185885673a0))
+
 ## [5.4.3](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.2...karasu-lab-api-v5.4.3) (2026-05-14)
 
 
