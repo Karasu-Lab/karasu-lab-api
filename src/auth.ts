@@ -60,12 +60,21 @@ export function createAuth(
 	const env = configService.getAll();
 	const authEnv = new AuthEnvironment(env.NODE_ENV);
 
+	const normalizePrivateKey = (value?: string): string | undefined => {
+		if (!value) {
+			return undefined;
+		}
+		const trimmed = value.trim();
+		const unquoted = trimmed.replace(/^"|"$/g, '').replace(/^'|'$/g, '');
+		return unquoted.replace(/\\n/g, '\n').replace(/\r\n?/g, '\n');
+	};
+
 	if (env.FIREBASE_PROJECT_ID && !getApps().length) {
 		initializeApp({
 			credential: cert({
 				projectId: env.FIREBASE_PROJECT_ID,
 				clientEmail: env.FIREBASE_CLIENT_EMAIL,
-				privateKey: env.FIREBASE_PRIVATE_KEY?.split(String.raw`\n`).join('\n'),
+				privateKey: normalizePrivateKey(env.FIREBASE_PRIVATE_KEY),
 			}),
 		});
 	}
