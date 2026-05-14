@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.3](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.2...karasu-lab-api-v5.4.3) (2026-05-14)
+
+
+### Bug Fixes
+
+* simplify ProductionOpenAPIEnvironment to return defaultOpenAPI ([828df47](https://github.com/Karasu-Lab/karasu-lab-api/commit/828df47e41c9ece0485d6ac9abc8a391b3d17715))
+
 ## [5.4.2](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.1...karasu-lab-api-v5.4.2) (2026-05-03)
 
 
