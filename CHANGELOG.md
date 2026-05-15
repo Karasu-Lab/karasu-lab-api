@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.5.2](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.1...karasu-lab-api-v5.5.2) (2026-05-15)
+
+
+### Bug Fixes
+
+* add consentPage to oidcProvider (resolves No consent page provided) ([59109bb](https://github.com/Karasu-Lab/karasu-lab-api/commit/59109bb3a09076dc22160df62f17671d73212ae4))
+* add consentPage to oidcProvider to resolve "No consent page provided" error ([3b09468](https://github.com/Karasu-Lab/karasu-lab-api/commit/3b09468bf772058f3519dafc9c2be6f0309a183a)), closes [#9](https://github.com/Karasu-Lab/karasu-lab-api/issues/9)
+
 ## [5.5.1](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.0...karasu-lab-api-v5.5.1) (2026-05-14)
 
 

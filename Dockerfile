@@ -1,6 +1,6 @@
 FROM node:22-bookworm-slim AS builder
 LABEL version="0.0.1"
-LABEL x-release-please-version="5.5.1"
+LABEL x-release-please-version="5.5.2"
 
 RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 RUN npm install -g bun
