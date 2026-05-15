@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.5.3](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.2...karasu-lab-api-v5.5.3) (2026-05-15)
+
+
+### Bug Fixes
+
+* correct consentPage path to /oauth/authorize ([ae1b2b1](https://github.com/Karasu-Lab/karasu-lab-api/commit/ae1b2b114ae8e599395d175708b601aa08970a95))
+* correct consentPage path to /oauth/authorize to match frontend route ([3ac20a9](https://github.com/Karasu-Lab/karasu-lab-api/commit/3ac20a9aa1c646777a1c748e4b74439d9a733c84))
+
 ## [5.5.2](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.1...karasu-lab-api-v5.5.2) (2026-05-15)
 
 
