@@ -1,24 +1,20 @@
 /** @format */
 
-import {
-  betterAuth,
-  BetterAuthOptions,
-  type Auth as BetterAuthType,
-} from 'better-auth';
+import { betterAuth, BetterAuthOptions, type Auth as BetterAuthType } from 'better-auth';
 import { syncFirebaseUser } from './firebase/index.js';
 import { createAuthMiddleware } from 'better-auth/api';
 import {
-  admin,
-  bearer,
-  customSession,
-  deviceAuthorization,
-  emailOTP,
-  magicLink,
-  oAuthProxy,
-  oidcProvider,
-  organization,
-  twoFactor,
-  username,
+	admin,
+	bearer,
+	customSession,
+	deviceAuthorization,
+	emailOTP,
+	magicLink,
+	oAuthProxy,
+	oidcProvider,
+	organization,
+	twoFactor,
+	username,
 } from 'better-auth/plugins';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { EnvironmentUtils } from '@hashibutogarasu/common';
@@ -51,200 +47,46 @@ import { createFirebaseCustomToken } from './firebase/index.js';
 import { apiKey } from '@better-auth/api-key';
 
 export function createAuth(
-  configService: IConfigService,
-  dbService: IDataBaseService,
-  notificationService: IAuthNotificationService,
-  passkeyAuth: IPasskeyAuth,
-  authConfig: IAuthConfig,
-  socialProviderConfig: ISocialProviderConfig,
-  adminConfig: IAdminConfig,
-  rateLimitConfig: IRateLimitConfig,
-  overrides: Partial<BetterAuthOptions> = {},
+	configService: IConfigService,
+	dbService: IDataBaseService,
+	notificationService: IAuthNotificationService,
+	passkeyAuth: IPasskeyAuth,
+	authConfig: IAuthConfig,
+	socialProviderConfig: ISocialProviderConfig,
+	adminConfig: IAdminConfig,
+	rateLimitConfig: IRateLimitConfig,
+	overrides: Partial<BetterAuthOptions> = {}
 ): BetterAuthType {
-  const env = configService.getAll();
-  const authEnv = new AuthEnvironment(env.NODE_ENV);
+	const env = configService.getAll();
+	const authEnv = new AuthEnvironment(env.NODE_ENV);
 
-  const normalizePrivateKey = (value?: string): string | undefined => {
-    if (!value) {
-      return undefined;
-    }
-    const trimmed = value.trim();
-    const unquoted = trimmed.replace(/^"|"$/g, '').replace(/^'|'$/g, '');
-    return unquoted.replace(/\\n/g, '\n').replace(/\r\n?/g, '\n');
-  };
+	const normalizePrivateKey = (value?: string): string | undefined => {
+		if (!value) {
+			return undefined;
+		}
+		const trimmed = value.trim();
+		const unquoted = trimmed.replace(/^"|"$/g, '').replace(/^'|'$/g, '');
+		return unquoted.replace(/\\n/g, '\n').replace(/\r\n?/g, '\n');
+	};
 
-  if (env.FIREBASE_PROJECT_ID && !getApps().length) {
-    initializeApp({
-      credential: cert({
-        projectId: env.FIREBASE_PROJECT_ID,
-        clientEmail: env.FIREBASE_CLIENT_EMAIL,
-        privateKey: normalizePrivateKey(env.FIREBASE_PRIVATE_KEY),
-      }),
-    });
-  }
+	if (env.FIREBASE_PROJECT_ID && !getApps().length) {
+		initializeApp({
+			credential: cert({
+				projectId: env.FIREBASE_PROJECT_ID,
+				clientEmail: env.FIREBASE_CLIENT_EMAIL,
+				privateKey: normalizePrivateKey(env.FIREBASE_PRIVATE_KEY),
+			}),
+		});
+	}
 
-  const socialProviders = {
-    ...socialProviderConfig.getBuiltinProviders(),
-    ...(overrides.socialProviders ?? {}),
-  };
+	const socialProviders = {
+		...socialProviderConfig.getBuiltinProviders(),
+		...(overrides.socialProviders ?? {}),
+	};
 
-<<<<<<< HEAD
-  return betterAuth({
-    baseURL: env.BETTER_AUTH_URL,
-    basePath: '/api/auth',
-    secret: env.BETTER_AUTH_SECRET,
-    appName: 'Karasu Lab',
-    trustedOrigins: [
-      ...authConfig.getTrustedOrigins(),
-      ...(Array.isArray(overrides.trustedOrigins)
-        ? overrides.trustedOrigins
-        : []),
-    ],
-    advanced: {
-      crossSubDomainCookies: authConfig.getCrossSubDomainCookies(),
-      trustHost: true,
-    },
-    trustedProxyHeaders: true,
-    ipAddressHeaders: ['cf-connecting-ip', 'x-forwarded-for'],
-    cookieCache: {
-      enabled: EnvironmentUtils.isProduction(authEnv.environment),
-      strategy: 'jwe',
-      maxAge: 300,
-    },
-    logger: {
-      level: EnvironmentUtils.isProduction(authEnv.environment)
-        ? 'info'
-        : 'debug',
-      disabled: false,
-    },
-    rateLimit: overrides.rateLimit ?? rateLimitConfig.getConfig(),
-    experimental: {
-      joins: true,
-    },
-    emailAndPassword: {
-      enabled: true,
-      requireEmailVerification: true,
-    },
-    emailVerification: {
-      sendVerificationEmail: async ({ user, url }) => {
-        await notificationService.sendVerificationEmail({ user, url });
-      },
-      sendOnSignUp: true,
-      sendOnSignIn: true,
-    },
-    socialProviders,
-    hooks: {
-      after: createAuthMiddleware(async (context) => {
-        if (
-          context.path === '/oauth2/consent' ||
-          context.path === '/sign-out'
-        ) {
-          const expiredDate = new Date(0).toUTCString();
-          const oidcCookies = ['oidc_login_prompt', 'oidc_consent_prompt'];
-          oidcCookies.forEach((cookieName) => {
-            const setCookie = `${cookieName}=; Expires=${expiredDate}; Max-Age=0; Path=/; SameSite=lax`;
-            context.setHeader('Set-Cookie', setCookie);
-          });
-        }
-        if (context.path === '/oauth2/token' && context.response.status === 200) {
-          const session = await context.context.auth.api.getSession({
-            headers: context.request.headers,
-          });
-          if (session) {
-            const token = session.session.token;
-            const isSecure = context.request.url.startsWith('https');
-            const cookieName = isSecure
-              ? '__Secure-better-auth.session_token'
-              : 'better-auth.session_token';
-            const setCookie = `${cookieName}=${token}; Path=/; HttpOnly; SameSite=Lax${isSecure ? '; Secure' : ''}`;
-            context.setHeader('Set-Cookie', setCookie);
-          }
-        }
-        if (context.context.newSession) {
-          const { user } = context.context.newSession;
-          context.context.runInBackground(
-            syncFirebaseUser({
-              id: user.id,
-              email: user.email,
-              name: user.name,
-            }),
-          );
-        }
-        await Promise.resolve();
-      }),
-    },
-    user: {
-      deleteUser: { enabled: true },
-      changeEmail: {
-        enabled: true,
-        sendChangeEmailConfirmation: async ({ newEmail, url }) => {
-          await notificationService.sendChangeEmailVerification({
-            newEmail,
-            url,
-          });
-        },
-      },
-    },
-    account: {
-      accountLinking: {
-        enabled: true,
-        allowDifferentEmails: true,
-        trustedProviders: Object.keys(socialProviderConfig.getProviders()),
-      },
-      updateAccountOnSignIn: true,
-    },
-    session: {},
-    database: dbService.getHandler(),
-    plugins: [
-      blueskyPlugin(),
-      oAuthProxy({
-        productionURL: env.FRONTEND_ORIGIN,
-      }),
-      dash(),
-      openAPIPlugin(),
-      oidcProvider({ loginPage: '/login', consentPage: '/oauth/authorize' }),
-      username(),
-      passwordPlugin(),
-      oauthApplicationPlugin(),
-      passkeyPlugin(passkeyAuth),
-      twoFactor(),
-      organization(),
-      admin({
-        adminUserIds: adminConfig.getUserIds(),
-      }),
-      apiKey({ enableSessionForAPIKeys: true }),
-      deviceAuthorization(),
-      bearer(),
-      emailOTP({
-        storeOTP: 'hashed',
-        sendVerificationOTP: async ({ email, otp, type }) => {
-          await notificationService.sendVerificationOTP({ email, otp, type });
-        },
-        sendVerificationOnSignUp: false,
-      }),
-      magicLink({
-        storeToken: 'hashed',
-        sendMagicLink: async ({ email, token }) => {
-          await notificationService.sendMagicLink({ email, token });
-        },
-      }),
-      customSession(
-        async ({ user, session }) => {
-          const firebaseIdToken = await createFirebaseCustomToken(user.id);
-          return {
-            user,
-            session,
-            firebaseIdToken,
-          };
-        },
-        {},
-        { shouldMutateListDeviceSessionsEndpoint: true },
-      ),
-      ...(overrides.plugins ?? []),
-    ],
-  }) as unknown as BetterAuthType;
-=======
-	return betterAuth({
+	let authInstance: BetterAuthType;
+
+	authInstance = betterAuth({
 		baseURL: env.BETTER_AUTH_URL,
 		basePath: '/api/auth',
 		secret: env.BETTER_AUTH_SECRET,
@@ -295,19 +137,21 @@ export function createAuth(
 					});
 				}
 				if (context.path === '/oauth2/token') {
-					const returned = context.context.returned as Record<string, any> | undefined;
-					if (returned && returned.access_token) {
-						const session = await context.context.auth.api.getSession({
-							headers: context.request.headers,
-						});
-						if (session) {
-							const token = session.session.token;
-							const isSecure = context.request.url.startsWith('https');
-							const cookieName = isSecure
-								? '__Secure-better-auth.session_token'
-								: 'better-auth.session_token';
-							const setCookie = `${cookieName}=${token}; Path=/; HttpOnly; SameSite=Lax${isSecure ? '; Secure' : ''}`;
-							context.setHeader('Set-Cookie', setCookie);
+					const returned = context.context.returned as Record<string, unknown> | undefined;
+					if (returned && typeof returned.access_token === 'string') {
+						if (authInstance) {
+							const session = await authInstance.api.getSession({
+								headers: context.request.headers,
+							});
+							if (session) {
+								const token = session.session.token;
+								const isSecure = context.request.url.startsWith('https');
+								const cookieName = isSecure
+									? '__Secure-better-auth.session_token'
+									: 'better-auth.session_token';
+								const setCookie = `${cookieName}=${token}; Path=/; HttpOnly; SameSite=Lax${isSecure ? '; Secure' : ''}`;
+								context.setHeader('Set-Cookie', setCookie);
+							}
 						}
 					}
 				}
@@ -353,7 +197,7 @@ export function createAuth(
 			}),
 			dash(),
 			openAPIPlugin(),
-			oidcProvider({ loginPage: '/login', consentPage: '/oauth/consent' }),
+			oidcProvider({ loginPage: '/login', consentPage: '/oauth/authorize' }),
 			username(),
 			passwordPlugin(),
 			oauthApplicationPlugin(),
@@ -394,47 +238,48 @@ export function createAuth(
 			...(overrides.plugins ?? []),
 		],
 	}) as unknown as BetterAuthType;
->>>>>>> 6e84fc8 (fix(auth): fix access to 'returned' in after hook)
+
+	return authInstance;
 }
 
 let cachedAuth: BetterAuthType | null = null;
 
 export async function initAuth(): Promise<BetterAuthType> {
-  if (cachedAuth) {
-    return cachedAuth;
-  }
+	if (cachedAuth) {
+		return cachedAuth;
+	}
 
-  const context = new AuthBootstrapContext();
+	const context = new AuthBootstrapContext();
 
-  if (context.authEnv && EnvironmentUtils.isTest(context.authEnv.environment)) {
-    cachedAuth = context.auth!;
-    return cachedAuth;
-  }
+	if (context.authEnv && EnvironmentUtils.isTest(context.authEnv.environment)) {
+		cachedAuth = context.auth!;
+		return cachedAuth;
+	}
 
-  const bootstrappers: IBetterAuthBootStrapper[] = [
-    new InitializeEnv(context),
-    new ValidEnv(context),
-    new InitializeConfig(context),
-    new InitializeService(context, createAuth),
-    new I18nBootStrapper(),
-  ];
+	const bootstrappers: IBetterAuthBootStrapper[] = [
+		new InitializeEnv(context),
+		new ValidEnv(context),
+		new InitializeConfig(context),
+		new InitializeService(context, createAuth),
+		new I18nBootStrapper(),
+	];
 
-  for (const bootstrapper of bootstrappers) {
-    await bootstrapper.bootstrap();
-  }
+	for (const bootstrapper of bootstrappers) {
+		await bootstrapper.bootstrap();
+	}
 
-  if (context.authEnv && context.dbService) {
-    await new DatabaseSeedingBootStrapper(
-      databaseSeedingFactory(context.dbService.prisma),
-    ).bootstrap();
-  }
+	if (context.authEnv && context.dbService) {
+		await new DatabaseSeedingBootStrapper(
+			databaseSeedingFactory(context.dbService.prisma)
+		).bootstrap();
+	}
 
-  if (!context.auth) {
-    throw ErrorCodes.SYSTEM.AUTH_INITIALIZATION_FAILED;
-  }
+	if (!context.auth) {
+		throw ErrorCodes.SYSTEM.AUTH_INITIALIZATION_FAILED;
+	}
 
-  cachedAuth = context.auth;
-  return cachedAuth;
+	cachedAuth = context.auth;
+	return cachedAuth;
 }
 
 export const auth: BetterAuthType = await initAuth();
