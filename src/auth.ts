@@ -176,7 +176,7 @@ export function createAuth(
 			}),
 			dash(),
 			openAPIPlugin(),
-			oidcProvider({ loginPage: '/login', consentPage: '/oauth/consent' }),
+			oidcProvider({ loginPage: '/login', consentPage: '/oauth/authorize' }),
 			username(),
 			passwordPlugin(),
 			oauthApplicationPlugin(),
