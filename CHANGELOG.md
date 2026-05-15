@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.5.5](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.4...karasu-lab-api-v5.5.5) (2026-05-15)
+
+
+### Bug Fixes
+
+* **auth:** return session cookie during oauth token exchange ([4c70b97](https://github.com/Karasu-Lab/karasu-lab-api/commit/4c70b979d8ab987cef9a3521ca457f51c0039354))
+* **auth:** return session cookie during oauth token exchange and fix property access ([e828994](https://github.com/Karasu-Lab/karasu-lab-api/commit/e828994b24627236866799242b769def905078a1))
+* fixed bluesky token logics ([1d1c459](https://github.com/Karasu-Lab/karasu-lab-api/commit/1d1c45953ac9792fcb75cf8607b8dda0c81103ad))
+
 ## [5.5.4](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.3...karasu-lab-api-v5.5.4) (2026-05-15)
 
 
