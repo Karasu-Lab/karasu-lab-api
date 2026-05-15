@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.5.6](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.5...karasu-lab-api-v5.5.6) (2026-05-15)
+
+
+### Bug Fixes
+
+* correctly generate better-auth session during oauth token exchange ([1f912e7](https://github.com/Karasu-Lab/karasu-lab-api/commit/1f912e7c449add29b015a66912ead3a1b6c566c7))
+
 ## [5.5.5](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.4...karasu-lab-api-v5.5.5) (2026-05-15)
 
 
