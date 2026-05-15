@@ -138,13 +138,19 @@ export function createAuth(
 				}
 				if (context.path === '/oauth2/token') {
 					const returned = context.context.returned as Record<string, unknown> | undefined;
+					
 					if (returned && typeof returned.access_token === 'string') {
-						if (authInstance) {
-							const session = await authInstance.api.getSession({
-								headers: context.request.headers,
-							});
-							if (session) {
-								const token = session.session.token;
+						const oauthToken = await dbService.getHandler().oauthAccessToken.findUnique({
+							where: { accessToken: returned.access_token }
+						});
+						
+						if (oauthToken && oauthToken.userId) {
+							const sessionData = await context.context.internalAdapter.createSession(
+								oauthToken.userId
+							);
+							
+							if (sessionData && sessionData.token) {
+								const token = sessionData.token;
 								const isSecure = context.request.url.startsWith('https');
 								const cookieName = isSecure
 									? '__Secure-better-auth.session_token'
