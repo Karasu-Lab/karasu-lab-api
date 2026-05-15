@@ -19,7 +19,8 @@ export class BlueskyController {
   @ApiResponse({ status: 200, description: 'Client metadata JSON document.' })
   @Get('client-metadata.json')
   getClientMetadata(@Req() req: express.Request) {
-    const protocol = (req.headers['x-forwarded-proto'] as string) || req.protocol;
+    const protocol =
+      (req.headers['x-forwarded-proto'] as string) || req.protocol;
     const host = (req.headers['x-forwarded-host'] as string) || req.get('host');
     const baseUrl = `${protocol}://${host}`;
     return this.blueskyService.getClientMetadata(baseUrl);

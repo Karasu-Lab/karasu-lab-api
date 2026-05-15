@@ -4,12 +4,24 @@ import {
   ISocialProvider,
   ISocialProviderConfig,
 } from './social-provider-config.interface.js';
-import { OAuthTokenResponse, SocialProviderConfig, UnifiedProfile, oauthTokenResponseSchema } from './types/social-provider.js';
+import {
+  OAuthTokenResponse,
+  SocialProviderConfig,
+  UnifiedProfile,
+  oauthTokenResponseSchema,
+} from './types/social-provider.js';
 import { discordProfileSchema } from './schemas/discord.schema.js';
 import { googleProfileSchema } from './schemas/google.schema.js';
 import { microsoftProfileSchema } from './schemas/microsoft.schema.js';
-import { parseEnvelope, symmetricDecrypt, symmetricEncrypt } from 'better-auth/crypto';
-import { buildSecretConfig, createDpopProof } from '../../../plugins/bluesky/dpop.js';
+import {
+  parseEnvelope,
+  symmetricDecrypt,
+  symmetricEncrypt,
+} from 'better-auth/crypto';
+import {
+  buildSecretConfig,
+  createDpopProof,
+} from '../../../plugins/bluesky/dpop.js';
 
 /**
  * Abstract base class for social provider
@@ -32,7 +44,9 @@ abstract class AbstractSocialProvider implements ISocialProvider {
   };
   abstract getProfile(accessToken: string): Promise<UnifiedProfile | null>;
 
-  async refreshTokens(refreshToken: string): Promise<OAuthTokenResponse | null> {
+  async refreshTokens(
+    refreshToken: string,
+  ): Promise<OAuthTokenResponse | null> {
     const endpoints = this.getEndpoints?.();
     const tokenEndpoint = endpoints?.tokenEndpoint;
     if (!tokenEndpoint) return null;
@@ -96,7 +110,9 @@ class DiscordProvider extends AbstractSocialProvider {
       id: data.id,
       name: data.username,
       email: data.email,
-      image: data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png` : undefined,
+      image: data.avatar
+        ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png`
+        : undefined,
     };
   }
 
@@ -141,9 +157,12 @@ class GoogleProvider extends AbstractSocialProvider {
   }
 
   async getProfile(accessToken: string): Promise<UnifiedProfile | null> {
-    const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const response = await fetch(
+      'https://www.googleapis.com/oauth2/v3/userinfo',
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
     if (!response.ok) return null;
     const json = await response.json();
     const data = googleProfileSchema.parse(json);
@@ -198,17 +217,20 @@ class MicrosoftProvider extends AbstractSocialProvider {
 
     let image: string | undefined;
     try {
-      const photoResponse = await fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const photoResponse = await fetch(
+        'https://graph.microsoft.com/v1.0/me/photo/$value',
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
       if (photoResponse.ok) {
         const buffer = await photoResponse.arrayBuffer();
-        const contentType = photoResponse.headers.get('content-type') || 'image/jpeg';
+        const contentType =
+          photoResponse.headers.get('content-type') || 'image/jpeg';
         const base64 = Buffer.from(buffer).toString('base64');
         image = `data:${contentType};base64,${base64}`;
       }
-    } catch {
-    }
+    } catch {}
 
     return {
       id: data.id,
@@ -291,7 +313,10 @@ class BlueskyProvider extends AbstractSocialProvider {
       const profile = (await res.json()) as Record<string, unknown>;
       return {
         id: did,
-        name: typeof profile.displayName === 'string' ? profile.displayName : undefined,
+        name:
+          typeof profile.displayName === 'string'
+            ? profile.displayName
+            : undefined,
         handle: typeof profile.handle === 'string' ? profile.handle : undefined,
         image: typeof profile.avatar === 'string' ? profile.avatar : undefined,
       };
@@ -300,7 +325,9 @@ class BlueskyProvider extends AbstractSocialProvider {
     }
   }
 
-  override async refreshTokens(refreshToken: string): Promise<OAuthTokenResponse | null> {
+  override async refreshTokens(
+    refreshToken: string,
+  ): Promise<OAuthTokenResponse | null> {
     const secret = this.configService.get('BLUESKY_REFRESH_TOKEN_SECRET');
     const endpoints = this.getEndpoints();
     const credentials = this.getCredentials();
@@ -319,7 +346,11 @@ class BlueskyProvider extends AbstractSocialProvider {
     }
 
     const doRequest = async (nonce?: string) => {
-      const dpopProof = await createDpopProof('POST', endpoints.tokenEndpoint, nonce);
+      const dpopProof = await createDpopProof(
+        'POST',
+        endpoints.tokenEndpoint,
+        nonce,
+      );
       const body = new URLSearchParams({
         grant_type: 'refresh_token',
         refresh_token: plainToken,
@@ -327,7 +358,10 @@ class BlueskyProvider extends AbstractSocialProvider {
       });
       const res = await fetch(endpoints.tokenEndpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', DPoP: dpopProof },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          DPoP: dpopProof,
+        },
         body,
       });
       const data = (await res.json()) as Record<string, unknown>;
@@ -335,15 +369,25 @@ class BlueskyProvider extends AbstractSocialProvider {
     };
 
     let result = await doRequest();
-    if (!result.ok && result.data.error === 'use_dpop_nonce' && result.dpopNonce) {
+    if (
+      !result.ok &&
+      result.data.error === 'use_dpop_nonce' &&
+      result.dpopNonce
+    ) {
       result = await doRequest(result.dpopNonce);
     }
     if (!result.ok) return null;
 
-    const newAccessToken = typeof result.data.access_token === 'string' ? result.data.access_token : null;
+    const newAccessToken =
+      typeof result.data.access_token === 'string'
+        ? result.data.access_token
+        : null;
     if (!newAccessToken) return null;
 
-    let newRefreshToken = typeof result.data.refresh_token === 'string' ? result.data.refresh_token : undefined;
+    let newRefreshToken =
+      typeof result.data.refresh_token === 'string'
+        ? result.data.refresh_token
+        : undefined;
     if (secret && newRefreshToken) {
       newRefreshToken = await symmetricEncrypt({
         key: buildSecretConfig(secret),
@@ -354,7 +398,10 @@ class BlueskyProvider extends AbstractSocialProvider {
     return {
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
-      expiresIn: typeof result.data.expires_in === 'number' ? result.data.expires_in : undefined,
+      expiresIn:
+        typeof result.data.expires_in === 'number'
+          ? result.data.expires_in
+          : undefined,
     };
   }
 }

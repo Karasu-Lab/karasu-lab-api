@@ -61,7 +61,8 @@ export class UserService {
     const provider = this.socialProviderConfig.getProvider(providerId);
     if (!provider) return null;
 
-    const isExpired = account.accessTokenExpiresAt && 
+    const isExpired =
+      account.accessTokenExpiresAt &&
       new Date(account.accessTokenExpiresAt).getTime() < Date.now() + 30000;
 
     let accessToken = account.accessToken;
@@ -75,8 +76,8 @@ export class UserService {
           data: {
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken ?? undefined,
-            accessTokenExpiresAt: tokens.expiresIn 
-              ? new Date(Date.now() + tokens.expiresIn * 1000) 
+            accessTokenExpiresAt: tokens.expiresIn
+              ? new Date(Date.now() + tokens.expiresIn * 1000)
               : undefined,
           },
         });
@@ -93,8 +94,8 @@ export class UserService {
           data: {
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken ?? undefined,
-            accessTokenExpiresAt: tokens.expiresIn 
-              ? new Date(Date.now() + tokens.expiresIn * 1000) 
+            accessTokenExpiresAt: tokens.expiresIn
+              ? new Date(Date.now() + tokens.expiresIn * 1000)
               : undefined,
           },
         });

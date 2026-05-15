@@ -31,13 +31,16 @@ export class BlueskyService {
   }
 
   getClientMetadata(providedBaseUrl?: string): BlueskyClientMetadata {
-    const baseUrl = providedBaseUrl ?? this.configService.get('BETTER_AUTH_URL');
+    const baseUrl =
+      providedBaseUrl ?? this.configService.get('BETTER_AUTH_URL');
     const clientId = `${baseUrl}/api/bluesky/oauth/client-metadata.json`;
     const baseRedirectUris = getApiConfig().bluesky.redirectUris.map((uri) =>
       this.normalizeRedirectUri(uri),
     );
     const dynamicRedirectUri = `${baseUrl}/api/auth/callback/bluesky`;
-    const redirectUris = Array.from(new Set([...baseRedirectUris, dynamicRedirectUri]));
+    const redirectUris = Array.from(
+      new Set([...baseRedirectUris, dynamicRedirectUri]),
+    );
 
     return {
       client_id: clientId,

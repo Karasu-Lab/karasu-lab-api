@@ -47,12 +47,12 @@ export type SocialProviderConfig = {
 };
 
 export const unifiedProfileSchema = z.object({
-	id: z.string(),
-	name: z.string().optional(),
-	email: z.string().email().optional(),
-	image: z.string().url().optional(),
-	handle: z.string().optional(),
-	url: z.string().url().optional(),
+  id: z.string(),
+  name: z.string().optional(),
+  email: z.string().email().optional(),
+  image: z.string().url().optional(),
+  handle: z.string().optional(),
+  url: z.string().url().optional(),
 });
 
 export type UnifiedProfile = z.infer<typeof unifiedProfileSchema>;

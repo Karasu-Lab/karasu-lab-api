@@ -26,154 +26,132 @@
 
 ## [5.5.1](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.5.0...karasu-lab-api-v5.5.1) (2026-05-14)
 
-
 ### Bug Fixes
 
-* correct paths in Dockerfile for package.json and related files ([807e080](https://github.com/Karasu-Lab/karasu-lab-api/commit/807e080334f564382eaf9df9118c63b6b93d7f2e))
+- correct paths in Dockerfile for package.json and related files ([807e080](https://github.com/Karasu-Lab/karasu-lab-api/commit/807e080334f564382eaf9df9118c63b6b93d7f2e))
 
 ## [5.5.0](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.5...karasu-lab-api-v5.5.0) (2026-05-14)
 
-
 ### Features
 
-* add .infisical.json configuration file ([8bfbf6b](https://github.com/Karasu-Lab/karasu-lab-api/commit/8bfbf6b16268a06d98775de0275af466178abdd9))
-* enhance auth key normalization and simplify DotEnv service implementation ([44f9133](https://github.com/Karasu-Lab/karasu-lab-api/commit/44f9133b4443299c71030e9bc118b7c4c4c83428))
-
+- add .infisical.json configuration file ([8bfbf6b](https://github.com/Karasu-Lab/karasu-lab-api/commit/8bfbf6b16268a06d98775de0275af466178abdd9))
+- enhance auth key normalization and simplify DotEnv service implementation ([44f9133](https://github.com/Karasu-Lab/karasu-lab-api/commit/44f9133b4443299c71030e9bc118b7c4c4c83428))
 
 ### Bug Fixes
 
-* update Dockerfile to correct paths for package.json and related files ([8e9cc37](https://github.com/Karasu-Lab/karasu-lab-api/commit/8e9cc37da5cf74993988f46b1be80c89ed4e33a2))
+- update Dockerfile to correct paths for package.json and related files ([8e9cc37](https://github.com/Karasu-Lab/karasu-lab-api/commit/8e9cc37da5cf74993988f46b1be80c89ed4e33a2))
 
 ## [5.4.5](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.4...karasu-lab-api-v5.4.5) (2026-05-14)
 
-
 ### Bug Fixes
 
-* update Dockerfile to correct package.json and workspace file paths ([886714a](https://github.com/Karasu-Lab/karasu-lab-api/commit/886714aa2df11da393270d0133857e8d13a9669f))
+- update Dockerfile to correct package.json and workspace file paths ([886714a](https://github.com/Karasu-Lab/karasu-lab-api/commit/886714aa2df11da393270d0133857e8d13a9669f))
 
 ## [5.4.4](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.3...karasu-lab-api-v5.4.4) (2026-05-14)
 
-
 ### Code Refactoring
 
-* simplify openAPI plugin and update Dockerfile for package copying ([7e3fcc7](https://github.com/Karasu-Lab/karasu-lab-api/commit/7e3fcc7ae8690dda797168936cbf1185885673a0))
+- simplify openAPI plugin and update Dockerfile for package copying ([7e3fcc7](https://github.com/Karasu-Lab/karasu-lab-api/commit/7e3fcc7ae8690dda797168936cbf1185885673a0))
 
 ## [5.4.3](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.2...karasu-lab-api-v5.4.3) (2026-05-14)
 
-
 ### Bug Fixes
 
-* simplify ProductionOpenAPIEnvironment to return defaultOpenAPI ([828df47](https://github.com/Karasu-Lab/karasu-lab-api/commit/828df47e41c9ece0485d6ac9abc8a391b3d17715))
+- simplify ProductionOpenAPIEnvironment to return defaultOpenAPI ([828df47](https://github.com/Karasu-Lab/karasu-lab-api/commit/828df47e41c9ece0485d6ac9abc8a391b3d17715))
 
 ## [5.4.2](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.1...karasu-lab-api-v5.4.2) (2026-05-03)
 
-
 ### Bug Fixes
 
-* fixed google token refresh error ([c44c17c](https://github.com/Karasu-Lab/karasu-lab-api/commit/c44c17cea0cb5ee68c71ac21dc2db22f6468cbe2))
+- fixed google token refresh error ([c44c17c](https://github.com/Karasu-Lab/karasu-lab-api/commit/c44c17cea0cb5ee68c71ac21dc2db22f6468cbe2))
 
 ## [5.4.1](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.4.0...karasu-lab-api-v5.4.1) (2026-05-03)
 
-
 ### Bug Fixes
 
-* fixed bluesky profile api logics ([3d2e246](https://github.com/Karasu-Lab/karasu-lab-api/commit/3d2e246da3187fa4187ed2cd2ee6774407e77aa1))
+- fixed bluesky profile api logics ([3d2e246](https://github.com/Karasu-Lab/karasu-lab-api/commit/3d2e246da3187fa4187ed2cd2ee6774407e77aa1))
 
 ## [5.4.0](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.11...karasu-lab-api-v5.4.0) (2026-05-02)
 
-
 ### Features
 
-* added me endpoint ([9d16b62](https://github.com/Karasu-Lab/karasu-lab-api/commit/9d16b62202fd168488da848bde13de1f245db75b))
+- added me endpoint ([9d16b62](https://github.com/Karasu-Lab/karasu-lab-api/commit/9d16b62202fd168488da848bde13de1f245db75b))
 
 ## [5.3.11](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.10...karasu-lab-api-v5.3.11) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed type error ([8ed5502](https://github.com/Karasu-Lab/karasu-lab-api/commit/8ed550283e6de7c50c2416104020a2bc4408d48a))
-
+- fixed type error ([8ed5502](https://github.com/Karasu-Lab/karasu-lab-api/commit/8ed550283e6de7c50c2416104020a2bc4408d48a))
 
 ### Code Refactoring
 
-* removed hardcoded providers ([0af6e1f](https://github.com/Karasu-Lab/karasu-lab-api/commit/0af6e1fa8cf30a8df9eb43385dfab87619c2fdc7))
+- removed hardcoded providers ([0af6e1f](https://github.com/Karasu-Lab/karasu-lab-api/commit/0af6e1fa8cf30a8df9eb43385dfab87619c2fdc7))
 
 ## [5.3.10](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.9...karasu-lab-api-v5.3.10) (2026-05-02)
 
-
 ### Code Refactoring
 
-* exported duplicated type ([45fedb4](https://github.com/Karasu-Lab/karasu-lab-api/commit/45fedb4de52ffe563a0ee4fe7b6cc84bb13c7397))
+- exported duplicated type ([45fedb4](https://github.com/Karasu-Lab/karasu-lab-api/commit/45fedb4de52ffe563a0ee4fe7b6cc84bb13c7397))
 
 ## [5.3.9](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.8...karasu-lab-api-v5.3.9) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed runtime error ([5e13f66](https://github.com/Karasu-Lab/karasu-lab-api/commit/5e13f663c5d65bdebb26233c3646f90eee8d630d))
+- fixed runtime error ([5e13f66](https://github.com/Karasu-Lab/karasu-lab-api/commit/5e13f663c5d65bdebb26233c3646f90eee8d630d))
 
 ## [5.3.8](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.7...karasu-lab-api-v5.3.8) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed unlink bluesky logics ([57f1a45](https://github.com/Karasu-Lab/karasu-lab-api/commit/57f1a45da383b324a1ac522e35590a1ab16eb726))
+- fixed unlink bluesky logics ([57f1a45](https://github.com/Karasu-Lab/karasu-lab-api/commit/57f1a45da383b324a1ac522e35590a1ab16eb726))
 
 ## [5.3.7](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.6...karasu-lab-api-v5.3.7) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed bluesky get profile error ([59d55f2](https://github.com/Karasu-Lab/karasu-lab-api/commit/59d55f2200dd32a168b43d6fd6f83141c7a79b9f))
+- fixed bluesky get profile error ([59d55f2](https://github.com/Karasu-Lab/karasu-lab-api/commit/59d55f2200dd32a168b43d6fd6f83141c7a79b9f))
 
 ## [5.3.6](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.5...karasu-lab-api-v5.3.6) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed bluesky get profile error ([bade7f5](https://github.com/Karasu-Lab/karasu-lab-api/commit/bade7f5bd0f69faaa846bbce529ad3b3cb292d1a))
+- fixed bluesky get profile error ([bade7f5](https://github.com/Karasu-Lab/karasu-lab-api/commit/bade7f5bd0f69faaa846bbce529ad3b3cb292d1a))
 
 ## [5.3.5](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.4...karasu-lab-api-v5.3.5) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed bluesky auth error ([2a42827](https://github.com/Karasu-Lab/karasu-lab-api/commit/2a42827df32bdceba1691060dc76b79468fb2d87))
+- fixed bluesky auth error ([2a42827](https://github.com/Karasu-Lab/karasu-lab-api/commit/2a42827df32bdceba1691060dc76b79468fb2d87))
 
 ## [5.3.4](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.3...karasu-lab-api-v5.3.4) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed bluesky auth error ([fd3989f](https://github.com/Karasu-Lab/karasu-lab-api/commit/fd3989f57c50daaa3a844503b5a78ff2b361f511))
+- fixed bluesky auth error ([fd3989f](https://github.com/Karasu-Lab/karasu-lab-api/commit/fd3989f57c50daaa3a844503b5a78ff2b361f511))
 
 ## [5.3.3](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.2...karasu-lab-api-v5.3.3) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed runtime error ([e29eeab](https://github.com/Karasu-Lab/karasu-lab-api/commit/e29eeabbf812831b3c2fab61055eb9d1b9d5dafe))
+- fixed runtime error ([e29eeab](https://github.com/Karasu-Lab/karasu-lab-api/commit/e29eeabbf812831b3c2fab61055eb9d1b9d5dafe))
 
 ## [5.3.2](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.1...karasu-lab-api-v5.3.2) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed build errors ([84e3dde](https://github.com/Karasu-Lab/karasu-lab-api/commit/84e3dde3997aaab527ca315f3b35ce2f09b855f6))
+- fixed build errors ([84e3dde](https://github.com/Karasu-Lab/karasu-lab-api/commit/84e3dde3997aaab527ca315f3b35ce2f09b855f6))
 
 ## [5.3.1](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.3.0...karasu-lab-api-v5.3.1) (2026-05-02)
 
-
 ### Bug Fixes
 
-* fixed lockfile ([4b68608](https://github.com/Karasu-Lab/karasu-lab-api/commit/4b68608ff856ccad677d50df8f4ed774e331a0d3))
+- fixed lockfile ([4b68608](https://github.com/Karasu-Lab/karasu-lab-api/commit/4b68608ff856ccad677d50df8f4ed774e331a0d3))
 
 ## [5.3.0](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.2.0...karasu-lab-api-v5.3.0) (2026-05-02)
 
-
 ### Features
 
-* added bluesky auth ([8e708d0](https://github.com/Karasu-Lab/karasu-lab-api/commit/8e708d0932b768a64c50990dc7923a476d26b797))
+- added bluesky auth ([8e708d0](https://github.com/Karasu-Lab/karasu-lab-api/commit/8e708d0932b768a64c50990dc7923a476d26b797))
 
 ## [5.2.0](https://github.com/Karasu-Lab/karasu-lab-api/compare/karasu-lab-api-v5.1.1...karasu-lab-api-v5.2.0) (2026-05-01)
 

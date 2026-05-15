@@ -1,4 +1,8 @@
-import { OAuthTokenResponse, SocialProviderConfig, UnifiedProfile } from './types/social-provider.js';
+import {
+  OAuthTokenResponse,
+  SocialProviderConfig,
+  UnifiedProfile,
+} from './types/social-provider.js';
 
 /**
  * Social provider configuration interface

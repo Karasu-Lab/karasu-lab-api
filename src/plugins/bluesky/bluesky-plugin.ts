@@ -71,7 +71,11 @@ async function exchangeCodeWithDpop(params: {
   });
 
   const doRequest = async (nonce?: string) => {
-    const dpopProof = await createDpopProof('POST', params.tokenEndpoint, nonce);
+    const dpopProof = await createDpopProof(
+      'POST',
+      params.tokenEndpoint,
+      nonce,
+    );
     const res = await fetch(params.tokenEndpoint, {
       method: 'POST',
       body,
@@ -83,7 +87,11 @@ async function exchangeCodeWithDpop(params: {
 
   let result = await doRequest();
 
-  if (!result.ok && result.data.error === 'use_dpop_nonce' && result.dpopNonce) {
+  if (
+    !result.ok &&
+    result.data.error === 'use_dpop_nonce' &&
+    result.dpopNonce
+  ) {
     result = await doRequest(result.dpopNonce);
   }
 
@@ -95,7 +103,8 @@ async function exchangeCodeWithDpop(params: {
 }
 
 const mapBlueskyUserProfile = (profile: Record<string, unknown>) => {
-  const idCandidate = profile.sub ?? profile.id ?? profile.did ?? profile.handle;
+  const idCandidate =
+    profile.sub ?? profile.id ?? profile.did ?? profile.handle;
   const isStringifiableId =
     typeof idCandidate === 'string' ||
     typeof idCandidate === 'number' ||
@@ -150,9 +159,7 @@ export const blueskyPlugin = (
           const dynamicBaseUrl = `${url.protocol}//${url.host}`;
           const oauthOptions = {
             clientId: `${dynamicBaseUrl}/api/bluesky/oauth/client-metadata.json`,
-            ...(oauth.clientSecret
-              ? { clientSecret: oauth.clientSecret }
-              : {}),
+            ...(oauth.clientSecret ? { clientSecret: oauth.clientSecret } : {}),
           };
           const oauthState = await getOAuthState();
           const loginHint =
@@ -211,12 +218,14 @@ export const blueskyPlugin = (
             const res = await fetch(profileUrl);
             if (res.ok) {
               const bskyProfile = (await res.json()) as Record<string, unknown>;
-              if (typeof bskyProfile.handle === 'string') profile.handle = bskyProfile.handle;
-              if (typeof bskyProfile.displayName === 'string') profile.name = bskyProfile.displayName;
-              if (typeof bskyProfile.avatar === 'string') profile.avatar = bskyProfile.avatar;
+              if (typeof bskyProfile.handle === 'string')
+                profile.handle = bskyProfile.handle;
+              if (typeof bskyProfile.displayName === 'string')
+                profile.name = bskyProfile.displayName;
+              if (typeof bskyProfile.avatar === 'string')
+                profile.avatar = bskyProfile.avatar;
             }
-          } catch {
-          }
+          } catch {}
 
           const user = mapBlueskyUserProfile(profile);
           if (!user) return null;
@@ -244,9 +253,10 @@ export const blueskyPlugin = (
             const oauthState = await getOAuthState();
             if (!oauthState?.link?.userId) return;
 
-            const accounts = await context.context.internalAdapter.findAccountByUserId(
-              oauthState.link.userId,
-            );
+            const accounts =
+              await context.context.internalAdapter.findAccountByUserId(
+                oauthState.link.userId,
+              );
             const blueskyAccount = accounts.find(
               (account) => account.providerId === 'bluesky',
             );
