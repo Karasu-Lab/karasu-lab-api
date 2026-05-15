@@ -88,6 +88,7 @@ export function createAuth(
     ...(overrides.socialProviders ?? {}),
   };
 
+<<<<<<< HEAD
   return betterAuth({
     baseURL: env.BETTER_AUTH_URL,
     basePath: '/api/auth',
@@ -242,6 +243,158 @@ export function createAuth(
       ...(overrides.plugins ?? []),
     ],
   }) as unknown as BetterAuthType;
+=======
+	return betterAuth({
+		baseURL: env.BETTER_AUTH_URL,
+		basePath: '/api/auth',
+		secret: env.BETTER_AUTH_SECRET,
+		appName: 'Karasu Lab',
+		trustedOrigins: [
+			...authConfig.getTrustedOrigins(),
+			...(Array.isArray(overrides.trustedOrigins) ? overrides.trustedOrigins : []),
+		],
+		advanced: {
+			crossSubDomainCookies: authConfig.getCrossSubDomainCookies(),
+			trustHost: true,
+		},
+		trustedProxyHeaders: true,
+		ipAddressHeaders: ['cf-connecting-ip', 'x-forwarded-for'],
+		cookieCache: {
+			enabled: EnvironmentUtils.isProduction(authEnv.environment),
+			strategy: 'jwe',
+			maxAge: 300,
+		},
+		logger: {
+			level: EnvironmentUtils.isProduction(authEnv.environment) ? 'info' : 'debug',
+			disabled: false,
+		},
+		rateLimit: overrides.rateLimit ?? rateLimitConfig.getConfig(),
+		experimental: {
+			joins: true,
+		},
+		emailAndPassword: {
+			enabled: true,
+			requireEmailVerification: true,
+		},
+		emailVerification: {
+			sendVerificationEmail: async ({ user, url }) => {
+				await notificationService.sendVerificationEmail({ user, url });
+			},
+			sendOnSignUp: true,
+			sendOnSignIn: true,
+		},
+		socialProviders,
+		hooks: {
+			after: createAuthMiddleware(async (context) => {
+				if (context.path === '/oauth2/consent' || context.path === '/sign-out') {
+					const expiredDate = new Date(0).toUTCString();
+					const oidcCookies = ['oidc_login_prompt', 'oidc_consent_prompt'];
+					oidcCookies.forEach((cookieName) => {
+						const setCookie = `${cookieName}=; Expires=${expiredDate}; Max-Age=0; Path=/; SameSite=lax`;
+						context.setHeader('Set-Cookie', setCookie);
+					});
+				}
+				if (context.path === '/oauth2/token') {
+					const returned = context.context.returned as Record<string, any> | undefined;
+					if (returned && returned.access_token) {
+						const session = await context.context.auth.api.getSession({
+							headers: context.request.headers,
+						});
+						if (session) {
+							const token = session.session.token;
+							const isSecure = context.request.url.startsWith('https');
+							const cookieName = isSecure
+								? '__Secure-better-auth.session_token'
+								: 'better-auth.session_token';
+							const setCookie = `${cookieName}=${token}; Path=/; HttpOnly; SameSite=Lax${isSecure ? '; Secure' : ''}`;
+							context.setHeader('Set-Cookie', setCookie);
+						}
+					}
+				}
+				if (context.context.newSession) {
+					const { user } = context.context.newSession;
+					context.context.runInBackground(
+						syncFirebaseUser({
+							id: user.id,
+							email: user.email,
+							name: user.name,
+						})
+					);
+				}
+				await Promise.resolve();
+			}),
+		},
+		user: {
+			deleteUser: { enabled: true },
+			changeEmail: {
+				enabled: true,
+				sendChangeEmailConfirmation: async ({ newEmail, url }) => {
+					await notificationService.sendChangeEmailVerification({
+						newEmail,
+						url,
+					});
+				},
+			},
+		},
+		account: {
+			accountLinking: {
+				enabled: true,
+				allowDifferentEmails: true,
+				trustedProviders: Object.keys(socialProviderConfig.getProviders()),
+			},
+			updateAccountOnSignIn: true,
+		},
+		session: {},
+		database: dbService.getHandler(),
+		plugins: [
+			blueskyPlugin(),
+			oAuthProxy({
+				productionURL: env.FRONTEND_ORIGIN,
+			}),
+			dash(),
+			openAPIPlugin(),
+			oidcProvider({ loginPage: '/login', consentPage: '/oauth/consent' }),
+			username(),
+			passwordPlugin(),
+			oauthApplicationPlugin(),
+			passkeyPlugin(passkeyAuth),
+			twoFactor(),
+			organization(),
+			admin({
+				adminUserIds: adminConfig.getUserIds(),
+			}),
+			apiKey({ enableSessionForAPIKeys: true }),
+			deviceAuthorization(),
+			bearer(),
+			emailOTP({
+				storeOTP: 'hashed',
+				sendVerificationOTP: async ({ email, otp, type }) => {
+					await notificationService.sendVerificationOTP({ email, otp, type });
+				},
+				sendVerificationOnSignUp: false,
+			}),
+			magicLink({
+				storeToken: 'hashed',
+				sendMagicLink: async ({ email, token }) => {
+					await notificationService.sendMagicLink({ email, token });
+				},
+			}),
+			customSession(
+				async ({ user, session }) => {
+					const firebaseIdToken = await createFirebaseCustomToken(user.id);
+					return {
+						user,
+						session,
+						firebaseIdToken,
+					};
+				},
+				{},
+				{ shouldMutateListDeviceSessionsEndpoint: true }
+			),
+			...(overrides.plugins ?? []),
+		],
+	}) as unknown as BetterAuthType;
+>>>>>>> 6e84fc8 (fix(auth): fix access to 'returned' in after hook)
 }
 
 let cachedAuth: BetterAuthType | null = null;
